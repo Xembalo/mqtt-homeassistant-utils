@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mqtt_homeassistant_utils"
+version = "0.0.1"
+dependencies = [
+  "paho-mqtt >= 1.6.1"
+]
+authors = [
+  { name="Sebastian Wienecke" }
+]
+description = "A helper project to work with the mqtt integraton in home assistant"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+license = {file = "LICENSE"}
+keywords = ["mqtt", "home assistant", "hass", "homeassistant", "auto discovery"]
+
+[project.urls]
+Homepage = "https://github.com/Xembalo/mqtt-homeassistant-utils"
+Issues = "https://github.com/Xembalo/mqtt-homeassistant-utils/issues"
+Repository = "https://github.com/Xembalo/mqtt-homeassistant-utils.git"
