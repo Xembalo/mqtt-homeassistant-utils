@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from typing import Optional, Union, Any, Dict, Tuple
 from enum import Enum
 
@@ -93,7 +93,7 @@ class HADeviceClassBinarySensor(Enum):
 
 
 @dataclass
-class __BaseDataClass:
+class __BaseDataClass():
 
     """ Base function for all Entries, like to_json """
     def to_json(self) -> str:
@@ -116,18 +116,18 @@ class __BaseDataClass:
             return obj
         
 
-@dataclass 
+@dataclass(kw_only=True)
 class __HAEntry(__BaseDataClass):
     discovery_prefix: str = "homeassistant"
-    component: str
-    node_id: str
-    unique_id: str
+    component: str = None
+    node_id: str = None
+    unique_id: str = None
 
     def publish(self, mqttClient: mqtt.Client, qos: int):
-        mqttClient.publish("homeassistant/" + self.component + "/" + self.node_id + "/" + self.unique_id + "/config", self.to_json(), qos=qos, retain=True)
+        mqttClient.publish(self.discovery_prefix + "/" + self.component + "/" + self.node_id + "/" + self.unique_id + "/config", self.to_json(), qos=qos, retain=True)
    
 
-@dataclass
+@dataclass(kw_only=True)
 class HADevice(__BaseDataClass):
     """ Device Subentry for all integrations """
     configuration_url: Optional[str] = None
@@ -141,7 +141,7 @@ class HADevice(__BaseDataClass):
     sw_version: Optional[str] = None
     via_device: Optional[str] = None
 
-@dataclass
+@dataclass(kw_only=True)
 class HAAvailability(__BaseDataClass):
     topic: str
 
@@ -149,10 +149,8 @@ class HAAvailability(__BaseDataClass):
     payload_not_available: Optional[str] = None
     value_template: Optional[str] = None
 
-@dataclass
+@dataclass(kw_only=True)
 class HASensor(__HAEntry):
-    component = "sensor"
-
     name: str
     state_topic: str
 
@@ -180,28 +178,34 @@ class HASensor(__HAEntry):
     unit_of_measurement: Optional[str] = None
     value_template: Optional[str] = None
 
-@dataclass
+    def __post_init__(self):
+        self.component = "sensor"
+
+@dataclass(kw_only=True)
 class HASensorEnergy(HASensor):
-    device_class = HADeviceClassSensor.ENERGY
-    state_class = "measurement"
-    unit_of_measurement = "kWh"
+    def __post_init__(self):
+        super().__post_init__()
+        self.device_class = HADeviceClassSensor.ENERGY
+        self.state_class = "measurement"
+        self.unit_of_measurement = "kWh"
 
-@dataclass
+@dataclass(kw_only=True)
 class HASensorTemperature(HASensor):
-    device_class = HADeviceClassSensor.TEMPERATURE
-    state_class = "measurement"
-    unit_of_measurement = "°C"    
+    def __post_init__(self):
+        super().__post_init__()
+        self.device_class = HADeviceClassSensor.TEMPERATURE
+        self.state_class = "measurement"
+        self.unit_of_measurement = "°C"
 
-@dataclass
+@dataclass(kw_only=True)
 class HASensorBattery(HASensor):
-    device_class = HADeviceClassSensor.BATTERY
-    state_class = "measurement"
-    unit_of_measurement = "°C"        
+    def __post_init__(self):
+        super().__post_init__()
+        self.device_class = HADeviceClassSensor.BATTERY
+        self.unit_of_measurement = "%"    
 
-@dataclass
+@dataclass(kw_only=True)
 class HABinarySensor(__HAEntry):
-    component = "binary_sensor"
-
     name: str
     state_topic: str
     availability: Optional[Tuple[HAAvailability]] = None
@@ -226,4 +230,8 @@ class HABinarySensor(__HAEntry):
     payload_not_available: Optional[str] = None
     qos: Optional[int] = None
     value_template: Optional[str] = None
+
+    
+    def __post_init__(self):
+        self.component = "binary_sensor"
  

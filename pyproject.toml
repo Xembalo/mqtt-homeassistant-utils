@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mqtt_homeassistant_utils"
-version = "0.0.1"
+version = "0.0.6"
 dependencies = [
   "paho-mqtt >= 1.6.1"
 ]
