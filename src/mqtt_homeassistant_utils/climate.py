@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import Optional, Tuple, List
-from enum import Enum
+from typing import Optional, List, ClassVar
 
-from .base import __HAEntry, HAAvailability, HADevice
+from .base import __HAEntry
 
 @dataclass(kw_only=True)
 class HAClimate(__HAEntry):
+    component: ClassVar[str] = "climate"
+
     action_template: Optional[str] = None
     action_topic: Optional[str] = None
     current_humidity_template: Optional[str] = None
@@ -65,5 +66,3 @@ class HAClimate(__HAEntry):
 
     def __post_init__(self):
         super().__post_init__()
-        
-        self.component = "climate"

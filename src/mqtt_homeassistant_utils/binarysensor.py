@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from dataclasses import dataclass
+from typing import Optional, ClassVar
 from enum import Enum
 
-from .base import __HAEntry, HAAvailability, HADevice
+from .base import __HAEntry
 
 class HADeviceClassBinarySensor(Enum):
     NONE = None
@@ -37,7 +37,7 @@ class HADeviceClassBinarySensor(Enum):
   
 @dataclass(kw_only=True)
 class HABinarySensor(__HAEntry):
-    state_topic: str = field(init=False, default=None)
+    component: ClassVar[str] = "binary_sensor"
 
     device_class: Optional[HADeviceClassBinarySensor] = HADeviceClassBinarySensor.NONE
     expire_after: Optional[int] = None
@@ -45,11 +45,10 @@ class HABinarySensor(__HAEntry):
     off_delay: Optional[int] = None
     payload_off: Optional[str] = None
     payload_on: Optional[str] = None
-    
+    state_topic: Optional[str] = None
+
     def __post_init__(self):
         super().__post_init__()
-
-        self.component = "binary_sensor"
 
         if self.state_topic is None:
             self.state_topic = self.node_id + "/values"

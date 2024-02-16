@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Optional, Tuple
+from typing import Optional, ClassVar
 from enum import Enum
 
-from .base import __HAEntry, HAAvailability, HADevice
+from .base import __HAEntry
 
 class HADeviceClassSensor(Enum):
     NONE = None
@@ -59,43 +59,45 @@ class HADeviceClassSensor(Enum):
 
 @dataclass(kw_only=True)
 class HASensor(__HAEntry):
-    state_topic: str = field(init=False, default=None)
+    component: ClassVar[str] = "sensor"
 
     device_class: Optional[HADeviceClassSensor] = HADeviceClassSensor.NONE
     expire_after: Optional[int] = None
     force_update: Optional[bool] = None
     last_reset_value_template: Optional[str] = None
     suggested_display_precision: Optional[int] = None
-    state_class: Optional[int] = None
+    state_class: Optional[str] = None
+    state_topic: Optional[str] = None
     unit_of_measurement: Optional[str] = None
 
     def __post_init__(self):
         super().__post_init__()        
-        
-        self.component = "sensor"
 
         if self.state_topic is None:
             self.state_topic = self.node_id + "/values"
 
 @dataclass(kw_only=True)
 class HASensorEnergy(HASensor):
+    device_class: HADeviceClassSensor = HADeviceClassSensor.ENERGY
+    state_class: str = "measurement"
+    unit_of_measurement: str = "kWh"
+    
     def __post_init__(self):
         super().__post_init__()
-        self.device_class = HADeviceClassSensor.ENERGY
-        self.state_class = "measurement"
-        self.unit_of_measurement = "kWh"
 
 @dataclass(kw_only=True)
 class HASensorTemperature(HASensor):
+    device_class: HADeviceClassSensor = HADeviceClassSensor.TEMPERATURE
+    state_class: str = "measurement"
+    unit_of_measurement: str = "°C"
+
     def __post_init__(self):
         super().__post_init__()
-        self.device_class = HADeviceClassSensor.TEMPERATURE
-        self.state_class = "measurement"
-        self.unit_of_measurement = "°C"
 
 @dataclass(kw_only=True)
 class HASensorBattery(HASensor):
+    device_class: HADeviceClassSensor = HADeviceClassSensor.BATTERY
+    unit_of_measurement: str = "%"
+
     def __post_init__(self):
         super().__post_init__()
-        self.device_class = HADeviceClassSensor.BATTERY
-        self.unit_of_measurement = "%"

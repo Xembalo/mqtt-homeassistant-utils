@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from typing import Optional, Tuple, List
-from enum import Enum
+from typing import Optional, List, ClassVar
 
-from .base import __HAEntry, HAAvailability, HADevice
+from .base import __HAEntry
   
 @dataclass(kw_only=True)
 class HASelect(__HAEntry):
+    component: ClassVar[str] = "select"
+
     command_topic: str
     options: List[str]
     
