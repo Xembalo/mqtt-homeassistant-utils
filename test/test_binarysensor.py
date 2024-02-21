@@ -10,20 +10,15 @@ class TestHABinarySensor(unittest.TestCase):
         self.assertIn("name", testDict)
         self.assertEqual(testDict["name"], "MyTestSensor")
 
-        self.assertIn("component", testDict)
-        self.assertEqual(testDict["component"], "binary_sensor")
-        
-        self.assertIn("discovery_prefix", testDict)
-        self.assertEqual(testDict["discovery_prefix"], "homeassistant")
+        self.assertNotIn("component", testDict)
+        self.assertNotIn("node_id", testDict)
+        self.assertNotIn("discovery_prefix", testDict)
 
         self.assertIn("unique_id", testDict)
         self.assertEqual(testDict["unique_id"], "justATest_mytestsensor")
 
         self.assertIn("state_topic", testDict)
         self.assertEqual(testDict["state_topic"], "justATest/values")
-
-        self.assertIn("node_id", testDict)
-        self.assertEqual(testDict["node_id"], "justATest")
 
     def test_mandatory_missing(self):
         

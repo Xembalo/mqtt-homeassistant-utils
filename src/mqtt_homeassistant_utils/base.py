@@ -20,7 +20,7 @@ def find_class_var(klass: Type, var_name: str) -> str:
 
 @dataclass
 class __BaseDataClass():
-     """ Base function for all Entries, like to_json """
+    """ Base function for all Entries, like to_json """
     def to_json(self) -> json:
         data_dict = self.to_dict()
         json_data = json.dumps(data_dict, indent=2)
@@ -41,11 +41,13 @@ class __BaseDataClass():
         
     def to_dict(self) -> dict:
         data_dict = asdict(self)
-        
-        component = find_class_var(self.__class__, "component")
-        if component is not None:
-            data_dict["component"] = component
 
+        #remove internal attributes
+        try:
+            del data_dict["node_id"], data_dict["discovery_prefix"], data_dict["component"]
+        except KeyError:
+            pass
+        
         data_dict = self.remove_null_values(data_dict)
 
         return data_dict
@@ -97,6 +99,11 @@ class __HAEntry(__BaseDataClass):
     value_template: Optional[str] = None
 
     def publish(self, mqttClient: mqtt.Client):
+        
+        component = find_class_var(self.__class__, "component")
+        if component is None or component == "":
+            raise Exception("No component given")
+        
         topic = (self.discovery_prefix + "/" + 
                  self.component + "/" + 
                  self.node_id + "/" + 
