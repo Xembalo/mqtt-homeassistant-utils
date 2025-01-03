@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mqtt_homeassistant_utils"
-version = "0.0.9"
+version = "0.0.10"
 dependencies = [
-  "paho-mqtt >= 1.6.1"
+  "paho-mqtt >= 2.1.0"
 ]
 authors = [
   { name="Sebastian Wienecke" }
 ]
 description = "A helper project to work with the mqtt integraton in home assistant"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
     "Programming Language :: Python :: 3",

@@ -4,7 +4,7 @@ A helper project designed to facilitate working with the MQTT integration in Hom
 
 ## Overview
 
-This repository contains Python code for generating Home Assistant (HA) MQTT discovery payloads. These payloads are used to configure sensors and binary sensors in Home Assistant via MQTT.
+This repository contains Python code for generating Home Assistant (HA) MQTT discovery payloads. These payloads are used to configure sensors, binary sensors and others in Home Assistant via MQTT.
 
 ## File Structure
 
@@ -31,7 +31,7 @@ sensor = HASensor(
 )
 
 # Configure MQTT client
-mqtt_client = mqtt.Client()
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqtt_client.connect("mqtt_broker_address", 1883)
 
 # Publish the MQTT discovery payload
@@ -46,10 +46,12 @@ This project was initially developed for personal use in my own Home Assistant p
 
 ## Enums
 
-The code includes two enum classes:
+The code includes enum classes:
 
-* `HADeviceClassSensor`: Enum for sensor device classes.
 * `HADeviceClassBinarySensor`: Enum for binary sensor device classes.
+* `HADeviceClassCover`: Enum for cover device classes.
+* `HADeviceClassSensor`: Enum for sensor device classes.
+* `HADeviceClassSwitch`: Enum for switch device classes.
 
 ## Contributing
 

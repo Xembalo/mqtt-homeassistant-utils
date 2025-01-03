@@ -61,6 +61,7 @@ class HADevice(__BaseDataClass):
     identifiers: Union[str, Tuple[str], None] = None
     manufacturer: Optional[str] = None
     model: Optional[str] = None
+    model_id: Optional[str] = None
     name: Optional[str] = None
     suggested_area: Optional[str] = None
     sw_version: Optional[str] = None
@@ -89,6 +90,7 @@ class __HAEntry(__BaseDataClass):
     enabled_by_default: Optional[bool] = None
     encoding: Optional[str] = None
     entity_category: Optional[str] = None
+    entity_picture: Optional[str] = None
     icon: Optional[str] = None
     json_attributes_template: Optional[str] = None
     json_attributes_topic: Optional[str] = None
